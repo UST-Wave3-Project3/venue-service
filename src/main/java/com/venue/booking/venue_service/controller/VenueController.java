@@ -24,11 +24,9 @@ public class VenueController {
         return new ResponseEntity<>(venueService.getAllVenues(), HttpStatus.OK);
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<VenueEntity> getVenueById(@PathVariable("id") int venueId) {
-        Optional<VenueEntity> venue = venueService.getVenueById(venueId);
-        return venue.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/{venueId}")
+    public ResponseEntity<Optional<VenueEntity>> getVenueById(@PathVariable int venueId) {
+        return new ResponseEntity<Optional<VenueEntity>>(venueService.getVenueById(venueId),HttpStatus.OK);
     }
     
     @PostMapping
@@ -46,12 +44,12 @@ public class VenueController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVenue(@PathVariable("id") int venueId) {
         venueService.deleteVenue(venueId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @GetMapping("/available/{status}")
     public ResponseEntity<List<VenueEntity>> getVenuesByAvailability(
-            @PathVariable("status") boolean status) {
+            @PathVariable boolean status) {
         return new ResponseEntity<>(venueService.getVenuesByAvailability(status), 
                                   HttpStatus.OK);
     }
